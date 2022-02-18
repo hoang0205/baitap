@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int pos[10][10];
+bool check(int row, int col, int a)
+{
+    for(int i = 1;i <= 9; i++)
+        if(pos[row][i] == a || pos[i][col] == a || pos[(row/3)*3+i/3][(col/3)*3+i%3] == a) return false;
+    return true;
+}
+bool backtracking(int row, int col)
+{
+    if(col == 9) return backtracking(row+1, 0);
+    if(row == 9) return true;
+    if(pos[row][col] != 0) backtracking(row, col+1);
+    for(int i = 1; i <= 9; i++)
+    {
+        if(check(row, col, i) == true)
+        {
+            pos[row][col] = i;
+             if(backtracking(row, col+1) == true) return true;
+        }
+        pos[row][col] = 0;
+
+    }
+    return false;
+}
+int main()
+{
+    freopen("sudoku.inp","r",stdin);
+    freopen("sudoku.out","w",stdout);
+    for(int i = 0; i < 9; i++)
+        for(int j = 0; j < 9; j++) cin>>pos[i][j];
+    backtracking(0, 0);
+    for(int i = 0; i < 9; i++)
+     {
+         for(int j = 0; j < 9; j++) cout<<pos[i][j]<<" ";
+         cout<<endl;
+     }
+    return 0;
+}
